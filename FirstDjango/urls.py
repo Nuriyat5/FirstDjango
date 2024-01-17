@@ -18,18 +18,9 @@ from MainApp import views
 from django.urls import path
 
 
-# urlpatterns = [
-#     path('', views.home),
-#     path('about', views.about),
-#     path('item/<int:item_id>', views.get_item),
-#     path('items', views.get_items),
-#     path('item/<int:item_id>', views.item_detail),
-# ]
-
 urlpatterns = [
     path('', views.home),
     path('about', views.about),
-    path('items/', views.item_list),
-    path('item/<int:item_id>', views.item_detail),
+    path('item/<int:item_id>', views.get_item),
+    path('items', views.get_items),
 ]
-

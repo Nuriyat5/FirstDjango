@@ -1,15 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
+from django.core.exceptions import ObjectDoesNotExist
+from MainApp.models import Item
 
 
 # Create your views here.
-author = {
-       "Имя": "Иван",
-       "Отчество": "Петрович",
-       "Фамилия": "Иванов",
-       "телефон": "8-923-600-01-02",
-       "email": "vasya@mail.ru",
-}
+
 
 items = [
    {"id": 1, "name": "Кроссовки abibas", "quantity": 5},
@@ -21,9 +17,6 @@ items = [
 
 
 def home(request):
-    # text = """<h1>"Изучаем django"</h1>
-    #        <strong>Автор</strong>: <i>Иванов И.П.</i>"""
-    # return HttpResponse(text)
     context = {
         "name": "Петров Иван Николаевич",
         "email": "my_mail@mail.ru"
@@ -32,7 +25,17 @@ def home(request):
 
 
 def about(request):
+    author = {
+       "Имя": "Иван",
+       "Отчество": "Петрович",
+       "Фамилия": "Иванов",
+       "телефон": "8-923-600-01-02",
+       "email": "vasya@mail.ru",
+    }
     text = f"""
+       <header>
+       / <a href="/"> Home </a> / <a href="/items"> Items </a> / <a href="/about"> About </a>
+       </header><br>
        Имя: <b>{author['Имя']}</b><br>
        Отчество: <b>{author['Отчество']}</b><br>
        Фамилия: <b>{author['Фамилия']}</b><br>
@@ -42,49 +45,29 @@ def about(request):
     return HttpResponse(text)
 
 
-# url item/1
-# url item/2
-# ...
-# url item/n
-
 # def get_item(request, item_id: int):
 #     """ По указанному item_id возращаем имя элемента и количество. """
 #     for item in items:
 #         if item['id'] == item_id:
-#             result = f""" 
-#             <h2>Имя: {item["name"]}</h2>
-#             <p>Количество: {item['quantity']}</p> 
-#             <p> <a href="/items"> Назад к списку товаров</a></p> 
-#             """
-#             return HttpResponse(result)
+#             context = {
+#                 "item": item
+#             }
+#             return render(request, "item_page.html", context)
 #     return HttpResponseNotFound(f'Item with id={item_id} not found')
 
 
-# <ol>
-#   <li> ... </li>
-#   <li> ... </li>
-#   <li> ... </li>
-# </ol>
-
-# def get_items(request):
-#     result = "<h2>Список товаров</h2><ol>"
-#     for item in items:
-#         result += f"""<li><a href="/item/{item['id']}"> {item["name"]} </a></li>"""
-#     result += "</ol>"
-#     return HttpResponse(result)
-
-def item_detail(request, item_id):
-    for item in items:
-        if item['id'] == 1:
-            result = f""" 
-            <h2>Имя: {item["name"]}</h2>
-            <p>Количество: {item['quantity']}</p> """
-    return render(request, 'item.html', {'item': result})
+def get_item(request, item_id: int):
+    """ По указанному item_id возращаем имя элемента и количество. """
+    item = Item.objects.get(id=item_id)
+    context = {
+        "item": item
+    }
+    return render(request, "item_page.html", context)
 
 
-def item_list(request):
-    result = "<h2>Список товаров</h2><ol>"
-    for item in items:
-        result += f"""<li><a href="/item/{item['id']}"> {item["name"]} </a></li>"""
-    result += "</ol>"
-    return render(request, 'item_list.html', {'item': result})
+def get_items(request):
+    items = Item.objects.all()
+    context = {
+        "items": items
+    }
+    return render(request, "items_list.html", context)
