@@ -47,17 +47,17 @@ def about(request):
 # ...
 # url item/n
 
-def get_item(request, item_id: int):
-    """ По указанному item_id возращаем имя элемента и количество. """
-    for item in items:
-        if item['id'] == item_id:
-            result = f""" 
-            <h2>Имя: {item["name"]}</h2>
-            <p>Количество: {item['quantity']}</p> 
-            <p> <a href="/items"> Назад к списку товаров</a></p> 
-            """
-            return HttpResponse(result)
-    return HttpResponseNotFound(f'Item with id={item_id} not found')
+# def get_item(request, item_id: int):
+#     """ По указанному item_id возращаем имя элемента и количество. """
+#     for item in items:
+#         if item['id'] == item_id:
+#             result = f""" 
+#             <h2>Имя: {item["name"]}</h2>
+#             <p>Количество: {item['quantity']}</p> 
+#             <p> <a href="/items"> Назад к списку товаров</a></p> 
+#             """
+#             return HttpResponse(result)
+#     return HttpResponseNotFound(f'Item with id={item_id} not found')
 
 
 # <ol>
@@ -66,9 +66,25 @@ def get_item(request, item_id: int):
 #   <li> ... </li>
 # </ol>
 
-def get_items(request):
+# def get_items(request):
+#     result = "<h2>Список товаров</h2><ol>"
+#     for item in items:
+#         result += f"""<li><a href="/item/{item['id']}"> {item["name"]} </a></li>"""
+#     result += "</ol>"
+#     return HttpResponse(result)
+
+def item_detail(request, item_id):
+    for item in items:
+        if item['id'] == 1:
+            result = f""" 
+            <h2>Имя: {item["name"]}</h2>
+            <p>Количество: {item['quantity']}</p> """
+    return render(request, 'item.html', {'item': result})
+
+
+def item_list(request):
     result = "<h2>Список товаров</h2><ol>"
     for item in items:
         result += f"""<li><a href="/item/{item['id']}"> {item["name"]} </a></li>"""
     result += "</ol>"
-    return HttpResponse(result)
+    return render(request, 'item_list.html', {'item': result})
