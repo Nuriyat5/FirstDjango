@@ -1,31 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title> Items list </title>
-    <style type="text/css">
-        DIV {
-        display: inline;
-        width: 100px; /* Ширина слоя */
-        margin: 7px; /* Значение отступов */
-        padding: 10px; /* Поля вокруг текста */
-        border: 4px solid black; /* Параметры границы */
-        background: #fc0; /* Цвет фона */
-        }
-    </style>
-</head>
-<body>
-    <header>
-        / <a href="/"> Home </a> / <a href="/items"> Items </a> / <a href="/about"> About </a>
-    </header>
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Items list {% endblock  %}
+
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+{% endblock  %}
+
+{% block content %}
+    {% include "header.html" %}
     
     <h2>Список товаров</h2>
-
     <ol>
         {% for item in items %}
-            <div><a href="/item/{{ item.id }}">{{ item.name }}</a></div>
+            <div class='items-list'>
+                <a href="{% url "item-detail" item.id %}">{{ item.name }}</a>
+            </div>
         {% endfor %}
     </ol>
-
-</body>
-</html>
+    
+{% endblock %}
