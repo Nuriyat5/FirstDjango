@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %} Item page {% endblock  %}
+
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+{% endblock  %}
 
 {% block content %}
     {% include "header.html" %}
     
-    <h1>{{ item.name }} </h1>
+    <h1> Товар </h1>
+    <span style="font-size:large;"><b>{{ item.name }}</b></span>
     <div>
         Производитель: {{ item.brand }}
     </div>
@@ -15,7 +23,19 @@
     <div>
         Описание: {{ item.description }}
     </div>
-   
+    <i>Цвета:</i>
+    
+    <ul class="ul_no_mark">
+        {% for color in colors %}
+            <li>
+                <div class='div_color' style="background-color:{{color.name}};"> </div>
+                &nbsp; {{ color.name }}
+            </li>
+        {% endfor %}
+
+    </ul>
+
+
     {% include "footer.html" %}
 
 {% endblock %}
