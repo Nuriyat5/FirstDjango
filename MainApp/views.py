@@ -59,3 +59,4 @@ def get_items(request):
         "items": items
     }
     return render(request, "items_list.html", context)
+#comm
